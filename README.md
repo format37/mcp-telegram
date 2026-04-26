@@ -69,3 +69,44 @@ python examples/send_message.py
 
 Sends one short message via `sendMessage` and one long message via the
 `sendDocument` fallback so you can confirm both paths work end-to-end.
+
+## Claude Desktop config
+
+Add to `claude_desktop_config.json` under `"mcpServers"`:
+
+```json
+"telegram": {
+    "command": "npx",
+    "args": [
+        "mcp-remote",
+        "https://your-domain.example.com/telegram/<MCP_TOKENS>/"
+    ]
+}
+```
+
+For a local container (requires publishing port 8019 in `docker-compose.yml`):
+
+```json
+"telegram": {
+    "command": "npx",
+    "args": [
+        "mcp-remote",
+        "http://localhost:8019/telegram/"
+    ]
+}
+```
+
+## Claude Code config
+
+```bash
+claude mcp add-json telegram '{"command":"npx","args":["mcp-remote","https://your-domain.example.com/telegram/<MCP_TOKENS>/"]}'
+```
+
+Or local:
+
+```bash
+claude mcp add-json telegram '{"command":"npx","args":["mcp-remote","http://localhost:8019/telegram/"]}'
+```
+
+After adding, verify with `claude mcp list` — the agent will then have a
+`send_telegram` tool available for sending notifications between job stages.
